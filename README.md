@@ -3,7 +3,7 @@
 # 야이 하하하하
 # hamham
 # I'm last
-# 권유진을모르는가대생은없다
+# 동스라이팅
 # I'm Jjin last
 # gkakaks ej
 

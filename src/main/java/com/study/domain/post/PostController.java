@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping; //@PostMapping ->> import class로 이거 추가됨
+import org.springframework.web.bind.annotation.RequestParam; //@RequestParam ->> import class로 이거 추가됨
 
 @Controller
 @RequiredArgsConstructor
@@ -13,15 +15,19 @@ public class PostController {
 
     // 게시글 작성 페이지
     @GetMapping("/post/write.do")
-    public String openPostWrite(Model model) {
-        String title = "제목",
-                content = "내용",
-                writer = "박길동";
-
-        model.addAttribute("t", title);
-        model.addAttribute("c", content);
-        model.addAttribute("w", writer);
+    public String openPostWrite(@RequestParam(value = "id", required = false) final Long id, Model model) { // 이문장 틀릴수도
+        if (id != null) {
+            PostResponse post = postService.findPostById(id);
+            model.addAttribute("post", post);
+        }
         return "post/write";
+    }
+
+    // 신규 게시글 생성
+    @PostMapping("/post/save.do")
+    public String savePost(final PostRequest params) {
+        postService.savePost(params);
+        return "redirect:/post/list.do";
     }
 
 }

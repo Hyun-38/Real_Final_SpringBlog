@@ -1,48 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="catholic.mini.Board.domain.post.PostMapper">
+<mapper namespace="com.study.domain.post.PostMapper">
 
     <!-- tb_post 테이블 전체 컬럼 -->
     <sql id="postColumns">
-        id,
-        title,
-        content,
-        writer,
-        view_cnt,
-        notice_yn,
-        delete_yn,
-        created_date,
-        modified_date
+        id
+        , title
+        , content
+        , writer
+        , view_cnt
+        , notice_yn
+        , delete_yn
+        , created_date
+        , modified_date
     </sql>
 
+
     <!-- 게시글 저장 -->
-    <insert id="save" parameterType="catholic.mini.Board.domain.post.PostRequest">
+    <insert id="save" parameterType="com.study.domain.post.PostRequest" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO tb_post (
-        id,
-        title,
-        content,
-        writer,
-        view_cnt,
-        notice_yn,
-        delete_yn,
-        created_date,
-        modified_date
+        <include refid="postColumns" />
         ) VALUES (
-        #{id},
-        #{title},
-        #{content},
-        #{writer},
-        0,
-        #{noticeYn},
-        0,
-        NOW(),
-        NULL
+        #{id}
+        , #{title}
+        , #{content}
+        , #{writer}
+        , 0
+        , #{noticeYn}
+        , 0
+        , NOW()
+        , NULL
         )
     </insert>
 
+
     <!-- 게시글 상세정보 조회 -->
-    <select id="findById" parameterType="java.lang.Long" resultType="catholic.mini.Board.domain.post.PostResponse">
+    <select id="findById" parameterType="long" resultType="com.study.domain.post.PostResponse">
         SELECT
         <include refid="postColumns" />
         FROM
@@ -51,30 +45,33 @@
         id = #{value}
     </select>
 
+
     <!-- 게시글 수정 -->
-    <update id="update" parameterType="catholic.mini.Board.domain.post.PostRequest">
+    <update id="update" parameterType="com.study.domain.post.PostRequest">
         UPDATE tb_post
         SET
-        modified_date = NOW(),
-        title = #{title},
-        content = #{content},
-        writer = #{writer},
-        notice_yn = #{noticeYn}
+            modified_date = NOW()
+          , title = #{title}
+          , content = #{content}
+          , writer = #{writer}
+          , notice_yn = #{noticeYn}
         WHERE
-        id = #{id}
+            id = #{id}
     </update>
+
 
     <!-- 게시글 삭제 -->
-    <update id="deleteById" parameterType="java.lang.Long">
+    <delete id="deleteById" parameterType="long">
         UPDATE tb_post
         SET
-        delete_yn = 1
+            delete_yn = 1
         WHERE
-        id = #{id}
-    </update>
+            id = #{id}
+    </delete>
+
 
     <!-- 게시글 리스트 조회 -->
-    <select id="findAll" resultType="catholic.mini.Board.domain.post.PostResponse">
+    <select id="findAll" resultType="com.study.domain.post.PostResponse">
         SELECT
         <include refid="postColumns" />
         FROM

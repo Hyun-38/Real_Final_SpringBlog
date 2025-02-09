@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping; //@PostMapping ->> import class로 이거 추가됨
 import org.springframework.web.bind.annotation.RequestParam; //@RequestParam ->> import class로 이거 추가됨
 
+import java.util.List; //List ->> import class로 이거 추가됨
+
 @Controller
 @RequiredArgsConstructor
 public class PostController {
@@ -28,6 +30,14 @@ public class PostController {
     public String savePost(final PostRequest params) {
         postService.savePost(params);
         return "redirect:/post/list.do";
+    }
+
+    // 게시글 리스트 페이지
+    @GetMapping("/post/list.do")
+    public String openPostList(Model model) {
+        List<PostResponse> posts = postService.findAllPost();
+        model.addAttribute("posts", posts);
+        return "post/list";
     }
 
 }
